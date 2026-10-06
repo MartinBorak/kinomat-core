@@ -1,0 +1,1 @@
+ALTER TABLE "screening" DROP COLUMN "price";

@@ -1,0 +1,78 @@
+{
+  "name": "kinomat-core",
+  "version": "0.0.0",
+  "description": "The database contract and shared helpers of Kinomat, the Bratislava cinema programme",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./db/schema": "./src/db/schema.ts",
+    "./db/client": "./src/db/client.ts",
+    "./db/appDatabase": "./src/db/appDatabase.ts",
+    "./db/bookableScreenings": "./src/db/bookableScreenings.ts",
+    "./db/migrate": "./src/db/migrate.ts",
+    "./db/seed": "./src/db/seed.ts",
+    "./db/findGenres": "./src/db/findGenres.ts",
+    "./db/__fixtures__/testDatabase": "./src/db/__fixtures__/testDatabase.ts",
+    "./db/__fixtures__/filmValues": "./src/db/__fixtures__/filmValues.ts",
+    "./db/__fixtures__/billFilms": "./src/db/__fixtures__/billFilms.ts",
+    "./types/cinema": "./src/types/cinema.ts",
+    "./types/film": "./src/types/film.ts",
+    "./types/priceRange": "./src/types/priceRange.ts",
+    "./lib/time": "./src/lib/time.ts",
+    "./lib/language": "./src/lib/language.ts",
+    "./lib/text": "./src/lib/text.ts",
+    "./lib/hrefs": "./src/lib/hrefs.ts",
+    "./lib/scheduleTag": "./src/lib/scheduleTag.ts",
+    "./lib/slovakLanguageAdjectives": "./src/lib/slovakLanguageAdjectives.ts",
+    "./lib/catalogueHrefs": "./src/lib/catalogueHrefs.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:db": "node --env-file=.env.local ./node_modules/vitest/vitest.mjs run src/db --no-file-parallelism",
+    "db:setup": "node --env-file-if-exists=.env.local --import tsx src/db/run.ts",
+    "db:generate": "tsx src/db/generateMigration.ts",
+    "hooks": "husky"
+  },
+  "peerDependencies": {
+    "drizzle-orm": "^0.45.3",
+    "postgres": "^3.4.9",
+    "temporal-polyfill": "^1.0.5",
+    "vitest": "^5.0.2"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.6",
+    "drizzle-kit": "^0.31.11",
+    "drizzle-orm": "^0.45.3",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-perfectionist": "^5.12.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.1",
+    "postgres": "^3.4.9",
+    "prettier": "^3.9.9",
+    "temporal-polyfill": "^1.0.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.70.1",
+    "vitest": "^5.0.2"
+  },
+  "packageManager": "pnpm@11.20.0",
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{js,mjs,cjs,ts,tsx,css,md,json,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}

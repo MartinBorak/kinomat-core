@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+# drizzle-kit never loads this loader (its bundle uses tsx), and it pins an esbuild with an open advisory.
+overrides:
+  'drizzle-kit>@esbuild-kit/esm-loader': '-'
+  # Patched releases inside the ranges their parents ask for, which pnpm update leaves transitive deps short of.
+  'brace-expansion@>=4.0.0 <5.0.12': '^5.0.12'
+  'fast-uri@>=3.0.0 <3.1.8': '^3.1.8'
