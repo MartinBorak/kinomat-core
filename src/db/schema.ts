@@ -230,7 +230,10 @@ export const titleResolutions = pgTable('title_resolution', {
   filmId: integer('film_id')
     .notNull()
     .references(() => films.id),
-  // Which layer settled it: tmdb, wikidata or override. See FilmMatch in types/film.ts.
+  /*
+   * Which layer settled it: tmdb, wikidata or override, or model for a TMDB film a model chose among
+   * candidates with the cinema's facts corroborating it. See FilmMatch in the pipeline's types/filmMatch.ts.
+   */
   evidence: text('evidence').notNull(),
   resolvedAt: timestamp('resolved_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
 })
