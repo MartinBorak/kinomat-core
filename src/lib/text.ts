@@ -18,3 +18,25 @@ export function foldForSearch(text: string): string {
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
 }
+
+// Letters NFD leaves whole, each being a letter of its own rather than a base plus a mark.
+const UNDECOMPOSED: Record<string, string> = {
+  ł: 'l',
+  đ: 'd',
+  ø: 'o',
+  ß: 'ss',
+  æ: 'ae',
+  œ: 'oe',
+}
+
+/*
+ * Text as a URL segment: bare lowercase letters and digits, one hyphen for every run of anything
+ * else. "Duna: Časť tretia" becomes "duna-cast-tretia". Empty where nothing survives, which a
+ * caller reads as "no slug" rather than as a name.
+ */
+export function toSlug(text: string): string {
+  return foldForSearch(text)
+    .replace(/[łđøßæœ]/g, (letter) => UNDECOMPOSED[letter])
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}

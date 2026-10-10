@@ -1,6 +1,33 @@
 import { describe, expect, it } from 'vitest'
 
-import { normalizeWhitespace } from './text'
+import { normalizeWhitespace, toSlug } from './text'
+
+describe('toSlug', () => {
+  it('folds a Slovak title to bare lowercase words joined by hyphens', () => {
+    expect(toSlug('Duna: Časť tretia')).toBe('duna-cast-tretia')
+  })
+
+  it('keeps digits, which tell a sequel or a year apart', () => {
+    expect(toSlug('Avatar 3')).toBe('avatar-3')
+  })
+
+  it('makes one hyphen of any run of punctuation and spaces', () => {
+    expect(toSlug('Tom & Jerry - Film!')).toBe('tom-jerry-film')
+  })
+
+  it('leaves no hyphen at either end', () => {
+    expect(toSlug('...a potom nič...')).toBe('a-potom-nic')
+  })
+
+  // These have no decomposition, so folding alone would drop them and run the words together.
+  it('transliterates the letters NFD cannot take apart', () => {
+    expect(toSlug('Łódź, Đorđe, Søren, Straße')).toBe('lodz-dorde-soren-strasse')
+  })
+
+  it('is empty for a title nothing survives of', () => {
+    expect(toSlug('###')).toBe('')
+  })
+})
 
 describe('normalizeWhitespace', () => {
   it('trims surrounding whitespace', () => {

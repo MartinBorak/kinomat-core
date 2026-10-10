@@ -39,6 +39,13 @@ export const films = pgTable(
      * same way, which the serial id above cannot promise. See toFilmPublicId.
      */
     publicId: text('public_id').notNull().unique(),
+    /*
+     * A readable name for the same page, for a link a person reads or types: /filmy/<alias>
+     * redirects to /filmy/<public id>. The store derives one from the title each run and a ruling
+     * may replace it, so unlike the public id it can change, which is why it only ever redirects.
+     * Null on a row the store has not restated since the column arrived. See toFilmAlias.
+     */
+    alias: text('alias'),
     tmdbId: integer('tmdb_id'),
     csfdId: text('csfd_id'),
     imdbId: text('imdb_id'),
@@ -66,6 +73,8 @@ export const films = pgTable(
       .defaultNow(),
   },
   (film) => [
+    // An alias names one film or none. Nulls are distinct, so rows without one do not collide.
+    uniqueIndex('film_alias_key').on(film.alias),
     uniqueIndex('film_tmdb_id_key').on(film.tmdbId),
     /*
      * Unique only where TMDB does not identify the film, because these three name the work and TMDB
@@ -269,6 +278,8 @@ export const filmOverrides = pgTable('film_override', {
   // Null like every other column here, which is the field nobody corrected.
   directors: text('director').array(),
   genreIds: integer('genre_id').array(),
+  // The name chosen over the one the store would derive; see films.alias.
+  alias: text('alias'),
 })
 
 /*

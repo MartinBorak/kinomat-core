@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
-import { isFilmPublicId, toFilmIdentity, toFilmPublicId, type Film } from './film'
+import {
+  isFilmAlias,
+  isFilmPublicId,
+  toFilmAlias,
+  toFilmIdentity,
+  toFilmPublicId,
+  type Film,
+} from './film'
 
 // A film nothing catalogues, so each test can add just the ids it is about.
 function buildFilm(overrides: Partial<Film> & Pick<Film, 'titleSk'>): Film {
@@ -91,5 +98,32 @@ describe('toFilmPublicId', () => {
     expect(isFilmPublicId('illusionously')).toBe(false)
     // Same digits, wrong case: one spelling per film.
     expect(isFilmPublicId('09824CBDAD88')).toBe(false)
+  })
+})
+
+describe('toFilmAlias', () => {
+  it('is the Slovak title as a slug', () => {
+    expect(toFilmAlias(buildFilm({ titleSk: 'Duna: Časť tretia' }))).toBe('duna-cast-tretia')
+  })
+
+  it('is nothing for a title that leaves no slug', () => {
+    expect(toFilmAlias(buildFilm({ titleSk: '???' }))).toBeNull()
+  })
+})
+
+describe('isFilmAlias', () => {
+  it('accepts what toFilmAlias produces, and a hand-written name of the same shape', () => {
+    expect(isFilmAlias('duna-cast-tretia')).toBe(true)
+    expect(isFilmAlias('duna-3')).toBe(true)
+  })
+
+  // One spelling per film, as with the public id; a stray hyphen or capital is a different string.
+  it('turns away capitals, diacritics, spaces and loose hyphens', () => {
+    expect(isFilmAlias('Duna')).toBe(false)
+    expect(isFilmAlias('duna časť')).toBe(false)
+    expect(isFilmAlias('duna cast')).toBe(false)
+    expect(isFilmAlias('-duna')).toBe(false)
+    expect(isFilmAlias('duna--3')).toBe(false)
+    expect(isFilmAlias('')).toBe(false)
   })
 })
