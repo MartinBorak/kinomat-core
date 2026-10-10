@@ -1,5 +1,7 @@
 import { createHash } from 'node:crypto'
 
+import { toSlug } from '../lib/text'
+
 /*
  * A film, as whichever catalogue could describe it: what every cinema's spelling resolves to, and
  * what a schedule groups by. Kept to the fields a listing needs, of the thirty-odd TMDB carries.
@@ -75,4 +77,22 @@ export function toFilmPublicId(film: Film): string {
 // Whether a URL segment could name a film at all, which is worth knowing before asking the database.
 export function isFilmPublicId(value: string): boolean {
   return PUBLIC_ID_PATTERN.test(value)
+}
+
+// What toSlug produces: hyphenated words of bare letters and digits. The booth holds an edit to it.
+const ALIAS_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+
+export function isFilmAlias(value: string): boolean {
+  return ALIAS_PATTERN.test(value)
+}
+
+/*
+ * The alias a film gets unless somebody rules otherwise: its Slovak title as a slug, which is what
+ * a reader would guess. Null for a title that leaves no slug, such as one made of symbols. Two
+ * films may share a title, so this is the start of a name and the store settles collisions.
+ */
+export function toFilmAlias(film: Pick<Film, 'titleSk'>): string | null {
+  const slug = toSlug(film.titleSk)
+
+  return slug === '' ? null : slug
 }
