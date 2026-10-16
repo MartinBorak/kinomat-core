@@ -88,6 +88,12 @@ export const CINEMAS = [
     address: 'Balkánska 31/66, Bratislava-Rusovce',
     website: 'https://www.sluk.sk/',
   },
+  {
+    id: 'kino-sud',
+    name: 'Kino SUD',
+    address: 'Ovsištské námestie 1, Bratislava-Petržalka',
+    website: 'https://slovenskyumeleckydvor.sk/kino/',
+  },
 ] as const satisfies Cinema[]
 
 // One of our cinemas as the registry knows it, which is a Cinema with its id narrowed to its own.
