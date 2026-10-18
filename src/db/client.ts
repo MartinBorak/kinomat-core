@@ -22,12 +22,21 @@ function requireDatabaseUrl(): string {
 
 export type Database = ReturnType<typeof connectToDatabase>
 
+export type ConnectionOptions = Pick<
+  postgres.Options<Record<string, never>>,
+  'max' | 'idle_timeout' | 'connect_timeout' | 'prepare'
+>
+
 /*
- * One connection to one database. Callers own it and close it, which suits scripts and tests; a
- * long-lived pool for the app is the deploy phase's problem, not this slice's.
+ * A connection to one database. Callers own it and close it, which suits scripts and tests; a
+ * server keeps one for its lifetime through getDatabase and passes the options a pooler in front
+ * of the database asks for.
  */
-export function connectToDatabase(databaseUrl: string = requireDatabaseUrl()) {
-  const client = postgres(databaseUrl)
+export function connectToDatabase(
+  databaseUrl: string = requireDatabaseUrl(),
+  options: ConnectionOptions = {},
+) {
+  const client = postgres(databaseUrl, options)
 
   return Object.assign(drizzle(client, { schema }), {
     close: async (): Promise<void> => client.end(),

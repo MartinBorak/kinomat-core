@@ -5,10 +5,14 @@ import { connectToDatabase, type Database } from '../client'
 import { migrateDatabase } from '../migrate'
 import {
   cinemas,
+  cinemaxFilms,
   films,
+  pipelineRuns,
   programmeFilms,
   programmePages,
   programmes,
+  publications,
+  scrapedDays,
   screenings,
   titleResolutions,
 } from '../schema'
@@ -27,7 +31,7 @@ export const databaseUrl = process.env.DATABASE_URL
  */
 async function emptyDatabase(database: Database): Promise<void> {
   await database.execute(
-    sql`TRUNCATE ${titleResolutions}, ${screenings}, ${programmeFilms}, ${programmes}, ${programmePages}, ${films}, ${cinemas} RESTART IDENTITY CASCADE`,
+    sql`TRUNCATE ${titleResolutions}, ${screenings}, ${programmeFilms}, ${programmes}, ${programmePages}, ${scrapedDays}, ${cinemaxFilms}, ${pipelineRuns}, ${publications}, ${films}, ${cinemas} RESTART IDENTITY CASCADE`,
   )
 }
 

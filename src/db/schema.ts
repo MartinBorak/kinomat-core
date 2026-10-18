@@ -1,7 +1,9 @@
 import { relations, sql } from 'drizzle-orm'
 import {
+  date,
   index,
   integer,
+  jsonb,
   numeric,
   pgTable,
   primaryKey,
@@ -206,9 +208,31 @@ export const screenings = pgTable(
 )
 
 /*
- * The programme page of a cinema no script can fetch, as a person saved it from their browser. One
- * per cinema, replaced by the next paste; the run reads it in place of an HTTP response. Held here
- * rather than on disk because the paste happens in the booth and the run happens wherever it runs.
+ * One cinema's screenings for one day, as the last run scraped them and before any title was
+ * resolved: the handoff between scraping and storing. In the database rather than in files so that
+ * a run on a machine with no disk of its own can scrape today and store tomorrow, and so the store
+ * can be rerun after a ruling without asking any cinema again.
+ */
+export const scrapedDays = pgTable(
+  'scraped_day',
+  {
+    cinemaId: text('cinema_id')
+      .notNull()
+      .references(() => cinemas.id),
+    // The Bratislava date the screenings start on, which is the day a refresh of that cinema replaces.
+    date: date('date', { mode: 'string' }).notNull(),
+    // The screenings as the scraper handed them over; the store parses them under today's rules.
+    screenings: jsonb('screenings').notNull(),
+    scrapedAt: timestamp('scraped_at', { withTimezone: true, mode: 'date' }).notNull(),
+  },
+  (scrapedDay) => [primaryKey({ columns: [scrapedDay.cinemaId, scrapedDay.date] })],
+)
+
+/*
+ * The programme page of a cinema no plain fetch reaches, read by a real browser or saved by a person
+ * from theirs. One per cinema, replaced by the next; the run reads it in place of an HTTP response.
+ * Held here rather than on disk because the paste happens in the booth and the run happens
+ * wherever it runs.
  */
 export const programmePages = pgTable('programme_page', {
   cinemaId: text('cinema_id')
@@ -216,6 +240,49 @@ export const programmePages = pgTable('programme_page', {
     .references(() => cinemas.id),
   html: text('html').notNull(),
   savedAt: timestamp('saved_at', { withTimezone: true, mode: 'date' }).notNull(),
+  // fetched by the run's browser, or pasted by a person; the booth says which it is looking at.
+  source: text('source').notNull().default('pasted'),
+})
+
+/*
+ * Cinemax's own id for each film it sells tickets for, keyed on the slug of the film's page. Each
+ * id costs one fetch of that page, which is why they are kept between runs rather than looked up
+ * each time; a slug no longer on sale is dropped, so the table holds the schedule's films only.
+ */
+export const cinemaxFilms = pgTable('cinemax_film', {
+  slug: text('slug').primaryKey(),
+  filmId: text('film_id').notNull(),
+  seenAt: timestamp('seen_at', { withTimezone: true, mode: 'date' }).notNull(),
+})
+
+/*
+ * One run of the pipeline, from its first write to its verdict. What the booth shows of a run
+ * nobody watched, and what a publish checks before copying: a run still writing is a staging
+ * database in mid-sentence.
+ */
+export const pipelineRuns = pgTable('pipeline_run', {
+  id: integer('id').generatedAlwaysAsIdentity().primaryKey(),
+  // scrape for a full refresh, store for a recompute from the scraped days already held.
+  mode: text('mode').notNull(),
+  startedAt: timestamp('started_at', { withTimezone: true, mode: 'date' }).notNull(),
+  finishedAt: timestamp('finished_at', { withTimezone: true, mode: 'date' }),
+  // running, succeeded or failed.
+  status: text('status').notNull(),
+  failedCinemas: text('failed_cinema').array().notNull().default([]),
+  unresolvedCount: integer('unresolved_count').notNull().default(0),
+  // The run's own account of itself, as the summary a person reads.
+  summary: text('summary').notNull().default(''),
+})
+
+/*
+ * One copy of staging into production, which is the only way production ever changes. Kept on the
+ * staging side, since production holds what the site reads and nothing about how it got there.
+ */
+export const publications = pgTable('publication', {
+  id: integer('id').generatedAlwaysAsIdentity().primaryKey(),
+  publishedAt: timestamp('published_at', { withTimezone: true, mode: 'date' }).notNull(),
+  filmCount: integer('film_count').notNull(),
+  screeningCount: integer('screening_count').notNull(),
 })
 
 /*
