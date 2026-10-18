@@ -29,6 +29,13 @@
       "when": 1791645437380,
       "tag": "0003_add_film_alias",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792354088636,
+      "tag": "0004_add_pipeline_state",
+      "breakpoints": true
     }
   ]
 }
