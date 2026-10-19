@@ -22,8 +22,19 @@ import {
  * target are what these tests are about, and a stand-in would agree to all of them. `pnpm test:db`
  * supplies the string and runs the files serially, since they share one database each empties.
  * Without a string they skip, so the ordinary suite never assumes a database is running.
+ * Its own variable, never DATABASE_URL: that names a developer's corpus, emptied twice this way.
  */
-export const databaseUrl = process.env.DATABASE_URL
+export const databaseUrl = process.env.TEST_DATABASE_URL
+
+/* The name is the last line of defence: a database that is not called *_test is never emptied. */
+export function assertTestDatabase(url: string): void {
+  const name = new URL(url).pathname.slice(1)
+  if (!name.endsWith('_test')) {
+    throw new Error(
+      `TEST_DATABASE_URL names "${name}", which does not end in _test. These tests empty the database they are given, so they refuse one that may hold work.`,
+    )
+  }
+}
 
 /*
  * Truncating rather than dropping keeps the migration cost off each test, and RESTART IDENTITY
@@ -40,6 +51,10 @@ async function emptyDatabase(database: Database): Promise<void> {
  * suite skipped for want of a connection string never tries to reach one.
  */
 const withConnection = baseIt.extend('connection', { scope: 'file' }, async ({}, { onCleanup }) => {
+  if (databaseUrl === undefined) {
+    throw new Error('TEST_DATABASE_URL is not set')
+  }
+  assertTestDatabase(databaseUrl)
   await migrateDatabase(databaseUrl)
   const database = connectToDatabase(databaseUrl)
 
@@ -53,8 +68,7 @@ const withConnection = baseIt.extend('connection', { scope: 'file' }, async ({},
 
 /*
  * An empty, already-migrated database, for a test that declares it. Emptied after the last test as
- * well as before each one: the same database is the one `pnpm db:store` writes to in development,
- * and rows left behind by a test read exactly like rows a run stored.
+ * well as before each one, so no test ever reads what another left behind.
  */
 export const it = withConnection.extend('database', async ({ connection }) => {
   await emptyDatabase(connection)

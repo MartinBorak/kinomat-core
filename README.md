@@ -25,7 +25,7 @@ pnpm hooks            # installs the pre-commit hook once
 pnpm lint && pnpm typecheck && pnpm test
 ```
 
-The database tests need a Postgres and truncate it between tests, so point `DATABASE_URL` in `.env.local` at a database nothing else uses. `compose.yaml` starts one locally with the credentials in `.env`.
+The database tests need a Postgres and truncate it between tests. They read `TEST_DATABASE_URL` from `.env.local`, never `DATABASE_URL`, and refuse a database whose name does not end in `_test`, so a working corpus can never be the one they empty. `compose.yaml` starts a Postgres locally with the credentials in `.env`; create the test database in it once with `docker compose exec postgres createdb -U "$POSTGRES_USER" kinomat_core_test`.
 
 ```sh
 docker compose up -d --wait
