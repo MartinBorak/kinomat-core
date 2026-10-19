@@ -29,7 +29,7 @@ jobs:
       - name: Lint, check formatting and typecheck
         run: pnpm run --parallel "/^(lint|format:check|typecheck)$/"
 
-      # Without DATABASE_URL the database tests skip; the job below is what proves the schema.
+      # Without TEST_DATABASE_URL the database tests skip; the job below is what proves the schema.
       - name: Test
         run: pnpm test
 
@@ -41,19 +41,22 @@ jobs:
         image: postgres:18-alpine
         env:
           POSTGRES_USER: kinomat
-          POSTGRES_DB: kinomat
+          # Named *_test, which is what the fixture insists on before it empties anything.
+          POSTGRES_DB: kinomat_test
           # Taken from the run rather than written down: this database is reachable from this job alone.
           POSTGRES_PASSWORD: ${{ github.run_id }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U kinomat -d kinomat"
+          --health-cmd "pg_isready -U kinomat -d kinomat_test"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
 
     env:
-      DATABASE_URL: postgres://kinomat:${{ github.run_id }}@localhost:5432/kinomat
+      # db:setup reads the first, the tests the second; here they are the same throwaway database.
+      DATABASE_URL: postgres://kinomat:${{ github.run_id }}@localhost:5432/kinomat_test
+      TEST_DATABASE_URL: postgres://kinomat:${{ github.run_id }}@localhost:5432/kinomat_test
 
     steps:
       - name: Check out repository
