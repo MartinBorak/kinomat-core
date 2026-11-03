@@ -63,8 +63,8 @@
     "temporal-polyfill": "^1.0.6",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.72.0",
-    "vitest": "^5.0.5"
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.1.0"
   },
   "packageManager": "pnpm@11.20.0",
   "lint-staged": {
