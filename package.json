@@ -16,6 +16,7 @@
     "./db/__fixtures__/filmValues": "./src/db/__fixtures__/filmValues.ts",
     "./db/__fixtures__/billFilms": "./src/db/__fixtures__/billFilms.ts",
     "./types/cinema": "./src/types/cinema.ts",
+    "./types/distributor": "./src/types/distributor.ts",
     "./types/film": "./src/types/film.ts",
     "./types/priceRange": "./src/types/priceRange.ts",
     "./lib/time": "./src/lib/time.ts",

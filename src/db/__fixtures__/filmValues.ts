@@ -1,3 +1,4 @@
+import { toDistributorId } from '../../types/distributor'
 import { type Film, toFilmPublicId } from '../../types/film'
 
 const NOTHING_KNOWN: Film = {
@@ -13,6 +14,8 @@ const NOTHING_KNOWN: Film = {
   posterPath: null,
   directors: [],
   genreIds: [],
+  distributor: null,
+  distributorUrl: '',
 }
 
 /*
@@ -21,8 +24,12 @@ const NOTHING_KNOWN: Film = {
  */
 export function toFilmValues(
   film: Partial<Film> & { titleSk: string },
-): Film & { publicId: string } {
-  const complete = { ...NOTHING_KNOWN, ...film }
+): Omit<Film, 'distributor'> & { publicId: string; distributorId: string | null } {
+  const { distributor, ...complete } = { ...NOTHING_KNOWN, ...film }
 
-  return { ...complete, publicId: toFilmPublicId(complete) }
+  return {
+    ...complete,
+    distributorId: distributor === null ? null : toDistributorId(distributor),
+    publicId: toFilmPublicId(complete),
+  }
 }

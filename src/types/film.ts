@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 
 import { toSlug } from '../lib/text'
+import { type Distributor } from './distributor'
 
 /*
  * A film, as whichever catalogue could describe it: what every cinema's spelling resolves to, and
@@ -27,6 +28,10 @@ export type Film = {
   // Both empty where no catalogue describes the film: an empty list is "nobody said", not "none".
   directors: string[]
   genreIds: number[]
+  // Null where the distributors' union names nobody, as for revivals and live events.
+  distributor: Distributor | null
+  // The film's page on the distributor's site; empty where there is no distributor or no page.
+  distributorUrl: string
 }
 
 // One home for the grammar, since an override builds an identity from a row rather than a Film.
@@ -70,7 +75,7 @@ const PUBLIC_ID_PATTERN = new RegExp(`^[0-9a-f]{${PUBLIC_ID_LENGTH}}$`)
  * out, so a film that is stored, dropped and stored again is the same film to a link somebody
  * saved - which a serial id is not, since a rebuilt table hands its numbers out afresh.
  */
-export function toFilmPublicId(film: Film): string {
+export function toFilmPublicId(film: Pick<Film, 'tmdbId' | 'wikidataId' | 'titleSk'>): string {
   return createHash('sha256').update(toFilmIdentity(film)).digest('hex').slice(0, PUBLIC_ID_LENGTH)
 }
 

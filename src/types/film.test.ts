@@ -23,6 +23,8 @@ function buildFilm(overrides: Partial<Film> & Pick<Film, 'titleSk'>): Film {
     posterPath: null,
     directors: [],
     genreIds: [],
+    distributor: null,
+    distributorUrl: '',
     ...overrides,
   }
 }
@@ -76,7 +78,9 @@ describe('toFilmPublicId', () => {
   it('names the same film the same way however often it is stored', () => {
     const film = buildFilm({ tmdbId: 660120, titleSk: 'Najhorší človek na svete' })
 
-    expect(toFilmPublicId(film)).toBe(toFilmPublicId({ ...film, posterPath: '/new.jpg' }))
+    const restated: Film = { ...film, posterPath: '/new.jpg' }
+
+    expect(toFilmPublicId(film)).toBe(toFilmPublicId(restated))
   })
 
   it('gives two films two names', () => {

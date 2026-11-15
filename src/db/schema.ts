@@ -24,6 +24,16 @@ export const cinemas = pgTable('cinema', {
 })
 
 /*
+ * The Slovak rights holder of a film. The id is derived from the name, so a rebuild keeps it, and
+ * like films a row lasts only while one of its films is playing.
+ */
+export const distributors = pgTable('distributor', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  website: text('website').notNull().default(''),
+})
+
+/*
  * An identity plus what a listing shows. The key is local because every catalogue id can be absent:
  * Šiesta veta has no TMDB id, and a film nothing resolved has none of them.
  *
@@ -66,6 +76,10 @@ export const films = pgTable(
      * them would store one language, and an id is what a filter can keep in a URL either way.
      */
     genreIds: integer('genre_id').array().notNull().default([]),
+    // Null where the distributors' union names nobody, as for revivals and live events.
+    distributorId: text('distributor_id').references(() => distributors.id),
+    // The film's own page on the distributor's site, where its title and poster were read.
+    distributorUrl: text('distributor_url').notNull().default(''),
     /*
      * What "newest" means in the booth. A re-store never restates it, so it dates the row's arrival
      * rather than the last run; a film that stops playing is deleted and dates afresh on return.
