@@ -232,6 +232,27 @@ export const CINEMAS = [
     cityId: 'zilina',
     website: 'https://www.stanica.sk/program/',
   },
+  {
+    id: 'sterio-kosice',
+    name: 'STERIO Kino Košice',
+    address: 'OC Galéria, Toryská 5, Košice',
+    cityId: 'kosice',
+    website: 'https://kosice.sterio.sk/',
+  },
+  {
+    id: 'sterio-presov',
+    name: 'STERIO Kino Prešov',
+    address: 'Eperia Shopping Mall, Arm. gen. L. Svobodu 25, Prešov',
+    cityId: 'presov',
+    website: 'https://presov.sterio.sk/',
+  },
+  {
+    id: 'sterio-zilina',
+    name: 'STERIO Kino Žilina',
+    address: 'OC Mirage, Námestie Andreja Hlinku 1070/7, Žilina',
+    cityId: 'zilina',
+    website: 'https://zilina.sterio.sk/',
+  },
 ] as const satisfies Cinema[]
 
 // One of our cinemas as the registry knows it, which is a Cinema with its id narrowed to its own.
