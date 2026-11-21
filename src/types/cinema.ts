@@ -204,6 +204,13 @@ export const CINEMAS = [
     website: 'https://kinousmev.sk/program/',
   },
   {
+    id: 'kinoklub-nitra',
+    name: 'Kinoklub Nitra',
+    address: 'Kino Palace, Radlinského 108/9, Nitra',
+    cityId: 'nitra',
+    website: 'https://www.kinoklubnitra.sk/',
+  },
+  {
     id: 'mlyny-cinemas',
     name: 'Mlyny Cinemas',
     address: 'Štefánikova trieda 61, Nitra',
