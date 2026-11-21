@@ -126,6 +126,13 @@ export const CINEMAS = [
     website: 'https://www.kfe.sk/cely-program',
   },
   {
+    id: 'kino-hviezda',
+    name: 'Kino Hviezda',
+    address: 'Paulínska 1, Trnava',
+    cityId: 'trnava',
+    website: 'http://www.kinohviezda.trnava.sk/',
+  },
+  {
     id: 'kino-lamac',
     name: 'Kino Lamač',
     address: 'Malokarpatské námestie 3, Bratislava',
@@ -173,6 +180,13 @@ export const CINEMAS = [
     address: 'Ovsištské námestie 1, Bratislava-Petržalka',
     cityId: 'bratislava',
     website: 'https://slovenskyumeleckydvor.sk/kino/',
+  },
+  {
+    id: 'mlyny-cinemas',
+    name: 'Mlyny Cinemas',
+    address: 'Štefánikova trieda 61, Nitra',
+    cityId: 'nitra',
+    website: 'https://www.mlyny-cinemas.sk/',
   },
 ] as const satisfies Cinema[]
 
