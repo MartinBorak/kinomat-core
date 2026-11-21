@@ -12,6 +12,8 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core'
 
+import { type CityId } from '../types/city'
+
 // A mirror of the CITIES registry in src/types/city.ts, there so a cinema can carry a foreign key.
 export const cities = pgTable('city', {
   id: text('id').primaryKey(),
@@ -29,6 +31,7 @@ export const cinemas = pgTable('cinema', {
   address: text('address').notNull(),
   // Mirrored so a listing can filter screenings by city in SQL.
   cityId: text('city_id')
+    .$type<CityId>()
     .notNull()
     .references(() => cities.id),
 })

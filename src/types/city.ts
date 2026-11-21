@@ -56,3 +56,15 @@ export const DEFAULT_CITY: CityId = 'bratislava'
 export function findCity(id: string): SupportedCity | null {
   return CITIES.find((city) => city.id === id) ?? null
 }
+
+export function isCityId(value: string): value is CityId {
+  return findCity(value) !== null
+}
+
+/*
+ * What a city's path starts with. A page outside any city (a film, About) links to the bare path
+ * instead, and the proxy sends the reader on to the city they last looked at.
+ */
+export function toCityPrefix(city: CityId | null): string {
+  return city === null ? '' : `/${city}`
+}
