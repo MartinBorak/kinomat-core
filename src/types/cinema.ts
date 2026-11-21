@@ -119,6 +119,14 @@ export const CINEMAS = [
     website: 'https://edisonfilmhub.sk/program',
   },
   {
+    id: 'filmovy-klub-banska-bystrica',
+    name: 'Filmový klub v Múzeu SNP',
+    address: 'Kapitulská 23, Banská Bystrica',
+    cityId: 'banska-bystrica',
+    // fkbb.sk forwards here: the club keeps no programme of its own beside its ticket seller's.
+    website: 'https://www.ticketlive.sk/sk/event/filmovy-klub-banska-bystrica',
+  },
+  {
     id: 'kino-film-europe',
     name: 'Kino Film Europe',
     address: 'Štefánikova 25, Bratislava',
