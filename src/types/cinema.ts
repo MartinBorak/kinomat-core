@@ -20,6 +20,14 @@ export const CINEMAS = [
     website: 'https://www.kzp.sk/podujatia/kino?place=78',
   },
   {
+    id: 'artkino-metro',
+    name: 'Artkino Metro',
+    address: 'KKC Hviezda, Kniežaťa Pribinu 3, Trenčín',
+    cityId: 'trencin',
+    // Plain http: the site's certificate names another host.
+    website: 'http://www.lampart.sk/',
+  },
+  {
     id: 'cinema-city-aupark',
     name: 'Cinema City Aupark',
     address: 'Einsteinova 20, Bratislava',
