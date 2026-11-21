@@ -182,11 +182,25 @@ export const CINEMAS = [
     website: 'https://slovenskyumeleckydvor.sk/kino/',
   },
   {
+    id: 'kino-usmev',
+    name: 'Kino Úsmev',
+    address: 'Kasárenské námestie 1, Košice',
+    cityId: 'kosice',
+    website: 'https://kinousmev.sk/program/',
+  },
+  {
     id: 'mlyny-cinemas',
     name: 'Mlyny Cinemas',
     address: 'Štefánikova trieda 61, Nitra',
     cityId: 'nitra',
     website: 'https://www.mlyny-cinemas.sk/',
+  },
+  {
+    id: 'stanica-zilina',
+    name: 'Stanica Žilina-Záriečie',
+    address: 'Závodská cesta 3/2844, Žilina',
+    cityId: 'zilina',
+    website: 'https://www.stanica.sk/program/',
   },
 ] as const satisfies Cinema[]
 
