@@ -49,6 +49,12 @@ export type SupportedCity = (typeof CITIES)[number]
 
 export type CityId = SupportedCity['id']
 
+// A city by its id, for code that already holds a valid one and so needs no null to handle.
+export const CITY_BY_ID = Object.fromEntries(CITIES.map((city) => [city.id, city])) as Record<
+  CityId,
+  SupportedCity
+>
+
 // Where a visitor lands before they have picked a city, and where Kinomat started.
 export const DEFAULT_CITY: CityId = 'bratislava'
 
