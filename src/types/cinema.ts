@@ -168,6 +168,13 @@ export const CINEMAS = [
     website: 'https://www.nostalgia.sk/program',
   },
   {
+    id: 'kino-pocity',
+    name: 'Kino Pocity',
+    address: 'Klub Stromoradie, Kmeťovo stromoradie, Prešov',
+    cityId: 'presov',
+    website: 'https://www.kinopocity.sk/',
+  },
+  {
     id: 'kino-sluk',
     name: 'Kino SĽUK',
     address: 'Balkánska 31/66, Bratislava-Rusovce',
