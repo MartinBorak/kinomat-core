@@ -12,6 +12,12 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core'
 
+// A mirror of the CITIES registry in src/types/city.ts, there so a cinema can carry a foreign key.
+export const cities = pgTable('city', {
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+})
+
 /*
  * A mirror of the CINEMAS registry in src/types/cinema.ts, which stays the source of truth because
  * CinemaId is derived from it. This table exists so a screening can carry a foreign key.
@@ -21,6 +27,10 @@ export const cinemas = pgTable('cinema', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   address: text('address').notNull(),
+  // Mirrored so a listing can filter screenings by city in SQL.
+  cityId: text('city_id')
+    .notNull()
+    .references(() => cities.id),
 })
 
 /*

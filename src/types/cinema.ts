@@ -1,8 +1,11 @@
+import type { CityId } from './city'
+
 // A physical cinema we aggregate showtimes for.
 export type Cinema = {
   id: string
   name: string
   address: string
+  cityId: CityId
   // The page the cinema publishes for itself, which is where a reader should be sent to book.
   website: string
 }
@@ -13,30 +16,35 @@ export const CINEMAS = [
     id: 'artkino-za-zrkadlom',
     name: 'Artkino Za zrkadlom',
     address: 'Rovniankova 3, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.kzp.sk/podujatia/kino?place=78',
   },
   {
     id: 'cinema-city-aupark',
     name: 'Cinema City Aupark',
     address: 'Einsteinova 20, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.cinemacity.sk/cinemas/cinema-city-aupark/1010',
   },
   {
     id: 'cinema-city-eurovea',
     name: 'Cinema City Eurovea',
     address: 'Pribinova 8, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.cinemacity.sk/cinemas/cinema-city-eurovea/1012',
   },
   {
     id: 'cinema-city-polus',
     name: 'Cinema City Polus (VIVO!)',
     address: 'Vajnorská 100, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.cinemacity.sk/cinemas/cinema-city-polus/1011',
   },
   {
     id: 'cinemax-bory-mall',
     name: 'Cinemax Bory Mall',
     address: 'OC Bory Mall, Lamač, Bratislava',
+    cityId: 'bratislava',
     // Cinemax has no page of its own per venue: its programme is picked from a menu on the front page.
     website: 'https://www.cine-max.sk/',
   },
@@ -44,54 +52,63 @@ export const CINEMAS = [
     id: 'edison-filmhub',
     name: 'Edison Filmhub',
     address: 'Baštová 348/6A, Bratislava',
+    cityId: 'bratislava',
     website: 'https://edisonfilmhub.sk/program',
   },
   {
     id: 'kino-film-europe',
     name: 'Kino Film Europe',
     address: 'Štefánikova 25, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.kfe.sk/cely-program',
   },
   {
     id: 'kino-lamac',
     name: 'Kino Lamač',
     address: 'Malokarpatské námestie 3, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.lamac.sk/kino-lamac',
   },
   {
     id: 'kino-luky',
     name: 'Kino Lúky',
     address: 'Vígľašská 1, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.kzp.sk/podujatia/kino?place=80',
   },
   {
     id: 'kino-lumiere',
     name: 'Kino Lumière',
     address: 'Špitálska 4, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.kino-lumiere.sk/',
   },
   {
     id: 'kino-mladost',
     name: 'Kino Mladosť',
     address: 'Hviezdoslavovo námestie 17, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.kinomladost.sk/',
   },
   {
     id: 'kino-nostalgia',
     name: 'Kino Nostalgia',
     address: 'Súťažná 18, Bratislava',
+    cityId: 'bratislava',
     website: 'https://www.nostalgia.sk/program',
   },
   {
     id: 'kino-sluk',
     name: 'Kino SĽUK',
     address: 'Balkánska 31/66, Bratislava-Rusovce',
+    cityId: 'bratislava',
     website: 'https://www.sluk.sk/',
   },
   {
     id: 'kino-sud',
     name: 'Kino SUD',
     address: 'Ovsištské námestie 1, Bratislava-Petržalka',
+    cityId: 'bratislava',
     website: 'https://slovenskyumeleckydvor.sk/kino/',
   },
 ] as const satisfies Cinema[]
