@@ -50,6 +50,13 @@
       "when": 1795275581165,
       "tag": "0006_add_city",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1795688164565,
+      "tag": "0007_add_film_last_screening",
+      "breakpoints": true
     }
   ]
 }

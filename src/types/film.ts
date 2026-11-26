@@ -68,6 +68,12 @@ export function toFilmIdentity(film: Pick<Film, 'tmdbId' | 'wikidataId' | 'title
  */
 const PUBLIC_ID_LENGTH = 12
 
+/*
+ * How long a film outlasts its last showing: its page stays up, saying it is no longer in
+ * cinemas, so a link shared or a result ranked while it played does not turn into nothing at once.
+ */
+export const FINISHED_FILM_DAYS = 30
+
 const PUBLIC_ID_PATTERN = new RegExp(`^[0-9a-f]{${PUBLIC_ID_LENGTH}}$`)
 
 /*

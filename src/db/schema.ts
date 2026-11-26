@@ -95,11 +95,18 @@ export const films = pgTable(
     distributorUrl: text('distributor_url').notNull().default(''),
     /*
      * What "newest" means in the booth. A re-store never restates it, so it dates the row's arrival
-     * rather than the last run; a film that stops playing is deleted and dates afresh on return.
+     * rather than the last run; a film gone longer than FINISHED_FILM_DAYS is deleted and dates
+     * afresh on return.
      */
     firstSeenAt: timestamp('first_seen_at', { withTimezone: true, mode: 'date' })
       .notNull()
       .defaultNow(),
+    /*
+     * When its latest showing starts, past or still to come. Its screenings are deleted the day
+     * after they play, so this is what remembers a film has stopped, and since when: its page stays
+     * up for FINISHED_FILM_DAYS after, and the row with it. Null for a film never billed.
+     */
+    lastScreeningAt: timestamp('last_screening_at', { withTimezone: true, mode: 'date' }),
   },
   (film) => [
     // An alias names one film or none. Nulls are distinct, so rows without one do not collide.
